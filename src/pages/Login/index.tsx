@@ -34,7 +34,7 @@ export default function Login() {
           })
           .then(data => {
             if(data.user){
-              console.log(data.user)
+              localStorage.setItem('token', data.token.accessToken);
               dispatch(addUser(data.user));
               navigate("/dashboard");
             } else {
