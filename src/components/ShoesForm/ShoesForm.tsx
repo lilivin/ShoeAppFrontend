@@ -1,5 +1,6 @@
  import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { getConstantValue } from 'typescript';
 import eventBus from '../../EventBut';
 import { editModal, hideModal } from '../../store/actions/modalActions';
 import { addShoes, updateShoes } from '../../store/actions/shoesActions';
@@ -9,6 +10,7 @@ import { Store } from "./../../types/Store";
  
  export default function ShoesForm() {
     const modalState = useSelector((state: Store) => state.modalReducer.modal);
+    const currentUser = useSelector((state: Store) => state.userReducer);
     const dispatch = useDispatch();
     const [error, setError] = useState(null);
     const formDefaultData = {
@@ -18,7 +20,7 @@ import { Store } from "./../../types/Store";
         product_code: 0,
         size: 0,
         site: "L",
-        owner_id: "422da57b-51bb-44a3-9f17-20054e137374",
+        owner_id: currentUser.id,
         requester_id: ""
     }
     const [formData, setFormData] = useState<SingleShoes>(formDefaultData);
@@ -32,21 +34,29 @@ import { Store } from "./../../types/Store";
     }
 
     const submitData = () => {
-        fetch('http://localhost:3000/shoes/create-shoe',{
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: {"Content-Type": "application/json"}
-          })
-          .then((response) => {
-            return response.json()
-          })
-          .then(() => {
-            dispatch(addShoes(formData));
-            setFormData(formDefaultData)
-          })
-          .catch((err) => {
-            setError(err.message);
-          })
+      const processedData = {
+        product_code: formData.product_code,
+        size: formData.size,
+        site: formData.site,
+        owner_id: formData.owner_id,
+        requester_id: formData.requester_id
+      }
+      console.log(processedData)
+      fetch('http://localhost:3000/shoes/create-shoe',{
+          method: 'POST',
+          body: JSON.stringify(processedData),
+          headers: {"Content-Type": "application/json"}
+        })
+        .then((response) => {
+          return response.json()
+        })
+        .then(() => {
+          dispatch(addShoes(formData));
+          setFormData(formDefaultData)
+        })
+        .catch((err) => {
+          setError(err.message);
+        })
     }
 
     const modifyData = () => {

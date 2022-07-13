@@ -13,6 +13,7 @@ import { SingleShoes } from '../../types/Shoes';
     const onRemoveShoes = (id: string) => {
       fetch('http://localhost:3000/shoes/delete-shoe/' + id, {method: 'DELETE'})
         .then(() => dispatch(removeShoes(id)))
+        // .then(() => eventBus.dispatch("removeShoes", shoe))
         .catch((err) => setError(err.message))
     }
 

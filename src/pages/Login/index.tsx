@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Store } from 'redux';
@@ -45,6 +45,12 @@ export default function Login() {
             setError(err.message);
           })
     }
+
+    useEffect(() => {
+      if(localStorage.getItem('token')){
+        navigate('/dashboard')
+      }
+    }, [])
 
   return (
     <div className='login-form'>

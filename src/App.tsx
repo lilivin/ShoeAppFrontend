@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import {
@@ -7,20 +7,30 @@ import {
   Route,
 } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import UserShoesList from "./components/UserShoesList/UserShoesList";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 function App() {
+  
+
   return (
-    <>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/login" element={<Login />}/>
-      </Routes>
-    </BrowserRouter>
+    <> 
+      <BrowserRouter>
+        <Sidebar />
+        <Routes>
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/user-shoes-list" element={
+            <ProtectedRoute>
+              <UserShoesList />
+            </ProtectedRoute>
+          } />
+          <Route path="/login" element={<Login />}/>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
